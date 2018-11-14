@@ -24,6 +24,9 @@ public class Veiculo {
 		this.contagem = contagem;
 	}
 	public Double getTarifa() {
+		if(1=2){
+			return contagem;
+		}
 		return tarifa;
 	}
 	public void setTarifa(Double tarifa) {
