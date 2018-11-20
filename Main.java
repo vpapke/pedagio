@@ -123,6 +123,24 @@ public class Main {
 	        System.out.println("==============================");
 	    }
 
+	    public void saldoInsuficienteAviso(){
+	    	System.out.println("------------------------------------");
+			System.out.println("      AVISO: SALDO INSUFICIENTE!!!  ");
+			System.out.println("------------------------------------\n");
+	    }
+
+	    public void veiculoNaoCadastradoAviso(){
+	    	System.out.println("--------------------------------------------");
+			System.out.println(" AVISO: Veiculo nao cadastrado no sistema!! ");
+			System.out.println("--------------------------------------------\n");
+	    }
+
+	    public void veiculoJaCadastradoAviso(){
+	    	System.out.println("--------------------------------------------");
+			System.out.println(" AVISO: Veiculo já cadastrado no sistema!!  ");
+			System.out.println("--------------------------------------------\n");
+	    }
+
 	    public void verificaSaldo(){
 	    	keyboard = new Scanner(System.in);
 	        System.out.println("Qual a placa do veiculo?");
@@ -146,9 +164,7 @@ public class Main {
 			}
 
 			if(count == motos.size() + carros.size()){
-				System.out.println("--------------------------------------------");
-				System.out.println(" AVISO: Veiculo nao cadastrado no sistema!! ");
-				System.out.println("--------------------------------------------\n");
+				this.veiculoNaoCadastradoAviso();
 			}
 	    }
 
@@ -163,9 +179,7 @@ public class Main {
 			for(Carro carro : carros){
 				if(placa.equals(carro.getPlaca())){
 					if(carro.getSaldo() < 3.50){
-						System.out.println("------------------------------------");
-						System.out.println("      AVISO: SALDO INSUFICIENTE!!!  ");
-						System.out.println("------------------------------------\n");
+						this.saldoInsuficienteAviso();
 					}else{
 						carro.setSaldo(carro.getSaldo() - 3.50);
 						carro.setContagem(carro.getContagem() + 1);
@@ -178,9 +192,7 @@ public class Main {
 			for(Motocicleta moto : motos){
 				if(placa.equals(moto.getPlaca())){
 					if(moto.getSaldo() < 1.50){
-						System.out.println("------------------------------------");
-						System.out.println("      AVISO: SALDO INSUFICIENTE!!!  ");
-						System.out.println("------------------------------------\n");
+						this.saldoInsuficienteAviso();
 					}else{
 						moto.setSaldo(moto.getSaldo() - 1.50);
 						moto.setContagem(moto.getContagem() + 1);
@@ -191,9 +203,7 @@ public class Main {
 			}
 
 			if(count == motos.size() + carros.size()){
-				System.out.println("--------------------------------------------");
-				System.out.println(" AVISO: Veiculo nao cadastrado no sistema!! ");
-				System.out.println("--------------------------------------------\n");
+				this.veiculoNaoCadastradoAviso();
 			}
 
 	    }
@@ -226,9 +236,7 @@ public class Main {
 			}
 
 			if(count == motos.size() + carros.size()){
-				System.out.println("--------------------------------------------");
-				System.out.println(" AVISO: Veiculo nao cadastrado no sistema!! ");
-				System.out.println("--------------------------------------------\n");
+				this.veiculoNaoCadastradoAviso();
 			}
 	    }
 
@@ -242,9 +250,7 @@ public class Main {
 
 			for(Carro carro : carros){
 				if(placa.equals(carro.getPlaca())){
-					System.out.println("--------------------------------------------");
-					System.out.println(" AVISO: Veiculo já cadastrado no sistema!!  ");
-					System.out.println("--------------------------------------------\n");
+					this.veiculoJaCadastradoAviso();
 				}else{
 					count++;
 				}
@@ -252,9 +258,7 @@ public class Main {
 
 			for(Motocicleta moto : motos){
 				if(placa.equals(moto.getPlaca())){
-					System.out.println("--------------------------------------------");
-					System.out.println(" AVISO: Veiculo já cadastrado no sistema!!  ");
-					System.out.println("--------------------------------------------\n");
+					this.veiculoJaCadastradoAviso();
 				}else{
 					count++;
 				}
@@ -281,8 +285,6 @@ public class Main {
 	    }
 	    
 	}
-
-
 
 	public class Carro extends Veiculo {
 		public Carro(String placa, Integer contagem, Double saldo){
