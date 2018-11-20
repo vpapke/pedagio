@@ -4,10 +4,8 @@ import java.util.ArrayList;
 public class Main {
 
 	public Scanner keyboard = new Scanner(System.in);
-	public Carro carros[] = new Carro[3];
-    public Motocicleta motos[] = new Motocicleta[1];
-    public int carroIndex = 0;
-    public int motoIndex = 0; 
+    public ArrayList<Carro> carros = new ArrayList<Carro>();
+    public ArrayList<Motocicleta> motos = new ArrayList<Motocicleta>();
 
 	public static void main(String[] args){
 		Main main = new Main();
@@ -19,9 +17,9 @@ public class Main {
 		// Carga inicial
 		ArrayList<String> veiculos = new ArrayList<String>();
 		veiculos.add("IRS-2245, 12, 85.50, A");
-		veiculos.add("ISW-5589, 25, 13.90, M");
+		veiculos.add("ISW-5589, 25, 3.90, M");
 		veiculos.add("ITT-1444, 35, 90.35, A");
-		veiculos.add("ATT-8901, 22, 150.00, A");
+		veiculos.add("ATT-8901, 22, 15.00, A");
 
 
 		this.convertVeiculosIntoObjects(veiculos);
@@ -52,7 +50,7 @@ public class Main {
                 break;
                 
             case 5:
-            	menu.salvaDados();
+            	menu.listarTodos();
                 break;
                 
             case 99:
@@ -89,7 +87,7 @@ public class Main {
 		for(String veiculo : veiculos)
 		{
 			parte = veiculo.split(",");
-			//tratando dados de entrada.
+			//tratando dados.
 			placa = parte[0].replaceAll("\\s+","");
 			contagem = Integer.parseInt(parte[1].replaceAll("\\s+",""));
 			saldo = Double.parseDouble(parte[2].replaceAll("\\s+",""));
@@ -98,15 +96,13 @@ public class Main {
 			if(tipo.equals("A"))
 			{
 				carro = new Carro(placa, contagem, saldo);
-				this.carros[this.carroIndex] = carro;
-				this.carroIndex++; 	
+				this.carros.add(carro); 	
 			}
 
 			if(tipo.equals("M"))
 			{
 				moto = new Motocicleta(placa, contagem, saldo);	
-				this.motos[this.motoIndex] = moto;
-				this.motoIndex++;
+				this.motos.add(moto);
 			}
 		}
 	}
@@ -122,7 +118,7 @@ public class Main {
 	        System.out.println(" 2. CANCELA AUTOMATICA		  ");
 	        System.out.println(" 3. RECARGA DE VEICULO		  ");
 	        System.out.println(" 4. CADASTRO DE VEICULO		  ");
-	        System.out.println(" 5. SALVAR DADOS EM ARQUIVO	  ");
+	        System.out.println(" 5. LISTAR TODOS OS VEICULOS  ");
 	        System.out.println(" 99. SAIR DO PROGRAMA		  ");
 	        System.out.println("==============================");
 	    }
@@ -149,8 +145,10 @@ public class Main {
 				}
 			}
 
-			if(count == motos.length + carros.length){
-				System.out.println("Veiculo nao cadastrado no sistema.\n");
+			if(count == motos.size() + carros.size()){
+				System.out.println("--------------------------------------------");
+				System.out.println(" AVISO: Veiculo nao cadastrado no sistema!! ");
+				System.out.println("--------------------------------------------\n");
 			}
 	    }
 
@@ -158,21 +156,130 @@ public class Main {
 	    public void passaPedagio(){
 
 	    	keyboard = new Scanner(System.in);
-			System.out.println("Qual a placa do veiculo?");
+	        System.out.println("Qual a placa do veiculo?");
 	        String placa = keyboard.nextLine();
+	        int count = 0;
+
+			for(Carro carro : carros){
+				if(placa.equals(carro.getPlaca())){
+					if(carro.getSaldo() < 3.50){
+						System.out.println("------------------------------------");
+						System.out.println("      AVISO: SALDO INSUFICIENTE!!!  ");
+						System.out.println("------------------------------------\n");
+					}else{
+						carro.setSaldo(carro.getSaldo() - 3.50);
+						carro.setContagem(carro.getContagem() + 1);
+					}
+				}else{
+					count++;
+				}
+			}
+
+			for(Motocicleta moto : motos){
+				if(placa.equals(moto.getPlaca())){
+					if(moto.getSaldo() < 1.50){
+						System.out.println("------------------------------------");
+						System.out.println("      AVISO: SALDO INSUFICIENTE!!!  ");
+						System.out.println("------------------------------------\n");
+					}else{
+						moto.setSaldo(moto.getSaldo() - 1.50);
+						moto.setContagem(moto.getContagem() + 1);
+					}
+				}else{
+					count++;
+				}
+			}
+
+			if(count == motos.size() + carros.size()){
+				System.out.println("--------------------------------------------");
+				System.out.println(" AVISO: Veiculo nao cadastrado no sistema!! ");
+				System.out.println("--------------------------------------------\n");
+			}
 
 	    }
 	    
 	    public void recaregaSaldo(){
-	        System.out.println("Voc� entrou no m�todo recarga de veiculo.");
+	    	keyboard = new Scanner(System.in);
+	        System.out.println("Qual a placa do veiculo?");
+	        String placa = keyboard.nextLine();
+	        int count = 0;
+	        Double valor_recarga;
+
+			for(Carro carro : carros){
+				if(placa.equals(carro.getPlaca())){
+					System.out.println("Digite o valor da recarga para o veiculo " + placa + ":");
+					valor_recarga = keyboard.nextDouble();
+					carro.setSaldo(carro.getSaldo() + valor_recarga);
+				}else{
+					count++;
+				}
+			}
+
+			for(Motocicleta moto : motos){
+				if(placa.equals(moto.getPlaca())){
+					System.out.println("Digite o valor da recarga para o veiculo " + placa + ":");
+					valor_recarga = keyboard.nextDouble();
+					moto.setSaldo(moto.getSaldo() + valor_recarga);
+				}else{
+					count++;
+				}
+			}
+
+			if(count == motos.size() + carros.size()){
+				System.out.println("--------------------------------------------");
+				System.out.println(" AVISO: Veiculo nao cadastrado no sistema!! ");
+				System.out.println("--------------------------------------------\n");
+			}
 	    }
+
 	    public void cadastraVeiculo(){
-	        System.out.println("Voc� entrou no m�todo cadastra de veiculo.");
+
+	    	keyboard = new Scanner(System.in);
+	        System.out.println("Qual a placa do veiculo a ser cadastrado no sistema?");
+	        String placa = keyboard.nextLine();
+	        int count = 0;
+	        Double valor_recarga;
+
+			for(Carro carro : carros){
+				if(placa.equals(carro.getPlaca())){
+					System.out.println("--------------------------------------------");
+					System.out.println(" AVISO: Veiculo já cadastrado no sistema!!  ");
+					System.out.println("--------------------------------------------\n");
+				}else{
+					count++;
+				}
+			}
+
+			for(Motocicleta moto : motos){
+				if(placa.equals(moto.getPlaca())){
+					System.out.println("--------------------------------------------");
+					System.out.println(" AVISO: Veiculo já cadastrado no sistema!!  ");
+					System.out.println("--------------------------------------------\n");
+				}else{
+					count++;
+				}
+			}
+
+			if(count == motos.size() + carros.size()){
+				System.out.println("O veiculo é carro ou moto? [A / M]");
+	        	String tipo = keyboard.nextLine();
+
+	        	ArrayList<String> veiculos = new ArrayList<String>();
+				veiculos.add(placa+", 0, 0.0, " + tipo);
+	        	convertVeiculosIntoObjects(veiculos);
+			}
+	    }
+
+	    public void listarTodos(){
+	    	for(Carro carro : carros){
+				carro.mostraVeiculo();
+			}
+
+			for(Motocicleta moto : motos){
+					moto.mostraVeiculo();
+			}
 	    }
 	    
-	    public void salvaDados(){
-	        System.out.println("Voc� entrou no m�todo salvar dados.");
-	    }
 	}
 
 
