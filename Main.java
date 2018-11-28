@@ -1,3 +1,13 @@
+/*
+	========================================
+	TRABALHO FINAL DE ORIENTAÇÃO A OBJETOS I
+	========================================
+
+	NOMES:
+		IAGO SCHLISTING IZOLAN MACHADO
+		VANDER PAPKE
+*/
+
 import java.util.Scanner;
 import java.util.ArrayList;
 
