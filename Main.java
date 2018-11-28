@@ -6,6 +6,8 @@ public class Main {
 	public Scanner keyboard = new Scanner(System.in);
     public ArrayList<Carro> carros = new ArrayList<Carro>();
     public ArrayList<Motocicleta> motos = new ArrayList<Motocicleta>();
+    public ArrayList<Caminhao> caminhoes = new ArrayList<Caminhao>();
+
 
 	public static void main(String[] args){
 		Main main = new Main();
@@ -18,9 +20,8 @@ public class Main {
 		ArrayList<String> veiculos = new ArrayList<String>();
 		veiculos.add("IRS-2245, 12, 85.50, A");
 		veiculos.add("ISW-5589, 25, 3.90, M");
-		veiculos.add("ITT-1444, 35, 90.35, A");
+		veiculos.add("ITT-1444, 35, 90.35, C");
 		veiculos.add("ATT-8901, 22, 15.00, A");
-
 
 		this.convertVeiculosIntoObjects(veiculos);
 
@@ -78,6 +79,9 @@ public class Main {
 	public void convertVeiculosIntoObjects(ArrayList<String> veiculos){
 		Carro carro;
         Motocicleta moto;
+        Caminhao caminhao;
+
+
       	String placa;
       	int contagem;
       	Double saldo;
@@ -103,6 +107,10 @@ public class Main {
 			{
 				moto = new Motocicleta(placa, contagem, saldo);	
 				this.motos.add(moto);
+			}
+			if(tipo.equals("C")){
+				caminhao = new Caminhao(placa, contagem, saldo);
+				this.caminhoes.add(caminhao);
 			}
 		}
 	}
@@ -163,7 +171,16 @@ public class Main {
 				}
 			}
 
-			if(count == motos.size() + carros.size()){
+			for(Caminhao caminhao : caminhoes){
+				if(placa.equals(caminhao.getPlaca())){
+					caminhao.mostraVeiculo();
+				}else{
+					count++;
+				}
+			}
+
+
+			if(count == motos.size() + carros.size() + caminhoes.size()){
 				this.veiculoNaoCadastradoAviso();
 			}
 	    }
@@ -202,7 +219,20 @@ public class Main {
 				}
 			}
 
-			if(count == motos.size() + carros.size()){
+			for(Caminhao caminhao : caminhoes){
+				if(placa.equals(caminhao.getPlaca())){
+					if(caminhao.getSaldo() < 5.00){
+						this.saldoInsuficienteAviso();
+					}else{
+						caminhao.setSaldo(caminhao.getSaldo() - 5.00);
+						caminhao.setContagem(caminhao.getContagem() + 1);
+					}
+				}else{
+					count++;
+				}
+			}
+
+			if(count == motos.size() + carros.size() + caminhoes.size()){
 				this.veiculoNaoCadastradoAviso();
 			}
 
@@ -235,7 +265,17 @@ public class Main {
 				}
 			}
 
-			if(count == motos.size() + carros.size()){
+			for(Caminhao caminhao : caminhoes){
+				if(placa.equals(caminhao.getPlaca())){
+					System.out.println("Digite o valor da recarga para o veiculo " + placa + ":");
+					valor_recarga = keyboard.nextDouble();
+					caminhao.setSaldo(caminhao.getSaldo() + valor_recarga);
+				}else{
+					count++;
+				}
+			}
+
+			if(count == motos.size() + carros.size() + caminhoes.size()){
 				this.veiculoNaoCadastradoAviso();
 			}
 	    }
@@ -250,7 +290,7 @@ public class Main {
 
 			for(Carro carro : carros){
 				if(placa.equals(carro.getPlaca())){
-					this.veiculoJaCadastradoAviso();
+					this.veiculoJaCadastradoAviso(); 
 				}else{
 					count++;
 				}
@@ -264,8 +304,16 @@ public class Main {
 				}
 			}
 
-			if(count == motos.size() + carros.size()){
-				System.out.println("O veiculo é carro ou moto? [A / M]");
+			for(Caminhao caminhao : caminhoes){
+				if(placa.equals(caminhao.getPlaca())){
+					this.veiculoJaCadastradoAviso();
+				}else{
+					count++;
+				}
+			}
+
+			if(count == motos.size() + carros.size() + caminhoes.size()){
+				System.out.println("O veiculo é carro ou moto? [A / M / C]");
 	        	String tipo = keyboard.nextLine();
 
 	        	ArrayList<String> veiculos = new ArrayList<String>();
@@ -280,7 +328,11 @@ public class Main {
 			}
 
 			for(Motocicleta moto : motos){
-					moto.mostraVeiculo();
+				moto.mostraVeiculo();
+			}
+
+			for(Caminhao caminhao : caminhoes){
+				caminhao.mostraVeiculo();
 			}
 	    }
 	    
@@ -294,6 +346,12 @@ public class Main {
 
 	public class Motocicleta extends Veiculo{
 		public Motocicleta(String placa, Integer contagem, Double saldo){
+			super(placa, contagem, saldo);
+		}
+	}
+
+	public class Caminhao extends Veiculo{
+		public Caminhao(String placa, Integer contagem, Double saldo){
 			super(placa, contagem, saldo);
 		}
 	}
